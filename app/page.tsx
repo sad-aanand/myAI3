@@ -139,7 +139,7 @@ export default function Chat() {
   return (
     <div className="flex h-screen items-center justify-center font-sans dark:bg-black">
       <main className="w-full dark:bg-black h-screen relative">
-        <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background to-transparent dark:bg-black overflow-visible">
+        <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background to-transparent dark:bg-black overflow-visible pb-16">
           <div className="relative overflow-visible">
             <ChatHeader>
               <ChatHeaderBlock />
