@@ -129,7 +129,7 @@ export default function Chat() {
 
   function clearChat() {
     const welcomeMessage: UIMessage = {
-      id: welcome-${Date.now()},
+      id: `welcome-${Date.now()}`,
       role: "assistant",
       parts: [
         {
