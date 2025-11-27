@@ -50,9 +50,15 @@ export const GUARDRAILS_PROMPT = `
 - Strictly refuse and end engagement if a request involves dangerous, illegal, shady, or inappropriate activities.
 `;
 
+// export const CITATIONS_PROMPT = `
+// - Always cite your sources using inline markdown, e.g., [Source #](Source URL).
+// - Do not ever just use [Source #] by itself and not provide the URL as a markdown link-- this is forbidden.
+// `;
+
 export const CITATIONS_PROMPT = `
-- Always cite your sources using inline markdown, e.g., [Source #](Source URL).
-- Do not ever just use [Source #] by itself and not provide the URL as a markdown link-- this is forbidden.
+- **Standard Citation:** Always cite your sources using inline markdown, e.g., [Source #](Source URL).
+- **Prohibition:** Do not ever just use [Source #] by itself and not provide the URL as a markdown link-- this is forbidden.
+- **Missing URL Exception:** If a source link (URL) is not available, do NOT create a fake or dead link. Instead, strictly state: "Data available on request to the PM Club @ BITSoM."
 `;
 
 export const COURSE_CONTEXT_PROMPT = `
