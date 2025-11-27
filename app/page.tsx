@@ -13,11 +13,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Eraser, Loader2, Plus, PlusIcon, Square } from "lucide-react";
+import { ArrowUp, Loader2, Plus, Square } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
-import { ChatHeader } from "@/app/parts/chat-header";
-import { ChatHeaderBlock } from "@/app/parts/chat-header";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { UIMessage } from "ai";
 import { useEffect, useState, useRef } from "react";
 import { AI_NAME, CLEAR_CHAT_TEXT, OWNER_NAME, WELCOME_MESSAGE } from "@/config";
@@ -63,6 +60,12 @@ const saveMessagesToStorage = (messages: UIMessage[], durations: Record<string, 
   } catch (error) {
     console.error('Failed to save messages to localStorage:', error);
   }
+};
+
+const STARTER_PROMPTS = {
+  prep: "Help me prepare for a company interview",
+  selected: "Who was selected at ",
+  general: "I have a general question about placements",
 };
 
 export default function Chat() {
@@ -146,60 +149,93 @@ export default function Chat() {
     toast.success("Chat cleared");
   }
 
+  function fillPrompt(prompt: string) {
+    form.setValue("message", prompt);
+  }
+
+  const hasConversation = messages.length > 1 || (messages.length === 1 && messages[0].role === "user");
+
   return (
-    <div className="flex h-screen items-center justify-center font-sans dark:bg-black">
-      <main className="w-full dark:bg-black h-screen relative">
-        <div className="fixed top-0 left-0 right-0 z-50 bg-linear-to-b from-background via-background/50 to-transparent dark:bg-black overflow-visible pb-16">
-          <div className="relative overflow-visible">
-            <ChatHeader>
-              <ChatHeaderBlock />
-              <ChatHeaderBlock className="justify-center items-center">
-                <Avatar
-                  className="size-8 ring-1 ring-primary"
-                >
-                  <AvatarImage src="/logo.png" />
-                  <AvatarFallback>
-                    <Image src="/logo.png" alt="Logo" width={36} height={36} />
-                  </AvatarFallback>
-                </Avatar>
-                <p className="tracking-tight">Chat with {AI_NAME}</p>
-              </ChatHeaderBlock>
-              <ChatHeaderBlock className="justify-end">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="cursor-pointer"
-                  onClick={clearChat}
-                >
-                  <Plus className="size-4" />
-                  {CLEAR_CHAT_TEXT}
-                </Button>
-              </ChatHeaderBlock>
-            </ChatHeader>
-          </div>
+    <div className="flex min-h-screen flex-col bg-white font-sans">
+      <header className="w-full py-6 flex justify-center items-center">
+        <div className="flex items-center gap-2">
+          <Image src="/logo.png" alt="Prep Buddy Logo" width={32} height={32} className="rounded-lg" />
+          <span className="text-xl font-bold text-[#1e3a5f] lowercase tracking-tight">prep buddy</span>
         </div>
-        <div className="h-screen overflow-y-auto px-5 py-4 w-full pt-[88px] pb-[150px]">
-          <div className="flex flex-col items-center justify-end min-h-full">
-            {isClient ? (
-              <>
-                <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
-                {status === "submitted" && (
-                  <div className="flex justify-start max-w-3xl w-full">
-                    <Loader2 className="size-4 animate-spin text-muted-foreground" />
-                  </div>
-                )}
-              </>
-            ) : (
-              <div className="flex justify-center max-w-2xl w-full">
-                <Loader2 className="size-4 animate-spin text-muted-foreground" />
-              </div>
-            )}
+        {hasConversation && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="absolute right-5 cursor-pointer"
+            onClick={clearChat}
+          >
+            <Plus className="size-4" />
+            {CLEAR_CHAT_TEXT}
+          </Button>
+        )}
+      </header>
+
+      <main className="flex-1 flex flex-col relative">
+        {!hasConversation ? (
+          <div className="flex-1 flex flex-col items-center justify-center px-5 pb-48">
+            <div className="bg-[#e8f4fc] rounded-3xl shadow-lg p-8 md:p-10 max-w-lg w-full text-center mb-8">
+              <h1 className="text-2xl md:text-3xl font-semibold text-[#1e3a5f] mb-3">
+                Hello! I'm Prep Buddy,
+              </h1>
+              <p className="text-[#4a6b8a] text-base md:text-lg leading-relaxed">
+                your AI assistant for anything related<br />to placements at BITSoM
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full max-w-lg justify-center">
+              <button
+                onClick={() => fillPrompt(STARTER_PROMPTS.prep)}
+                className="px-6 py-3 bg-[#e8a4b8] hover:bg-[#dda0a8] text-[#1e3a5f] font-medium rounded-full transition-colors text-sm md:text-base shadow-sm"
+              >
+                Prep for a company
+              </button>
+              <button
+                onClick={() => fillPrompt(STARTER_PROMPTS.selected)}
+                className="px-6 py-3 bg-white hover:bg-gray-50 text-[#1e3a5f] font-medium rounded-full border border-[#d1d5db] transition-colors text-sm md:text-base shadow-sm"
+              >
+                Who was selected at...
+              </button>
+              <button
+                onClick={() => fillPrompt(STARTER_PROMPTS.general)}
+                className="px-6 py-3 bg-white hover:bg-gray-50 text-[#7c3aed] font-medium rounded-full border border-[#d1d5db] transition-colors text-sm md:text-base shadow-sm"
+              >
+                General chat
+              </button>
+            </div>
+
+            <p className="text-xs text-gray-400 text-center max-w-md">
+              Product in beta – please verify responses, currently limited to Product Management domain.
+            </p>
           </div>
-        </div>
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-t from-background via-background/50 to-transparent dark:bg-black overflow-visible pt-13">
-          <div className="w-full px-5 pt-5 pb-1 items-center flex justify-center relative overflow-visible">
-            <div className="message-fade-overlay" />
-            <div className="max-w-3xl w-full">
+        ) : (
+          <div className="flex-1 overflow-y-auto px-5 py-4 pb-48">
+            <div className="flex flex-col items-center justify-end min-h-full">
+              {isClient ? (
+                <>
+                  <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
+                  {status === "submitted" && (
+                    <div className="flex justify-start max-w-3xl w-full">
+                      <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                    </div>
+                  )}
+                </>
+              ) : (
+                <div className="flex justify-center max-w-2xl w-full">
+                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white via-white to-transparent pt-6">
+          <div className="w-full px-5 pb-3 flex justify-center">
+            <div className="max-w-2xl w-full">
               <form id="chat-form" onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
                   <Controller
@@ -210,11 +246,11 @@ export default function Chat() {
                         <FieldLabel htmlFor="chat-form-message" className="sr-only">
                           Message
                         </FieldLabel>
-                        <div className="relative h-13">
+                        <div className="relative">
                           <Input
                             {...field}
                             id="chat-form-message"
-                            className="h-15 pr-15 pl-5 bg-card rounded-[20px]"
+                            className="h-14 pr-14 pl-5 bg-[#f3f4f6] rounded-full border-0 shadow-sm text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#1e3a5f]/20"
                             placeholder="Type your message here..."
                             disabled={status === "streaming"}
                             aria-invalid={fieldState.invalid}
@@ -228,23 +264,23 @@ export default function Chat() {
                           />
                           {(status == "ready" || status == "error") && (
                             <Button
-                              className="absolute right-3 top-3 rounded-full"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#1e3a5f] hover:bg-[#2d4a6f] size-10"
                               type="submit"
                               disabled={!field.value.trim()}
                               size="icon"
                             >
-                              <ArrowUp className="size-4" />
+                              <ArrowUp className="size-5 text-white" />
                             </Button>
                           )}
                           {(status == "streaming" || status == "submitted") && (
                             <Button
-                              className="absolute right-2 top-2 rounded-full"
+                              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#1e3a5f] hover:bg-[#2d4a6f] size-10"
                               size="icon"
                               onClick={() => {
                                 stop();
                               }}
                             >
-                              <Square className="size-4" />
+                              <Square className="size-4 text-white" />
                             </Button>
                           )}
                         </div>
@@ -255,11 +291,13 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          <div className="w-full px-5 py-3 items-center flex justify-center text-xs text-muted-foreground">
-            © {new Date().getFullYear()} {OWNER_NAME}&nbsp;<Link href="/terms" className="underline">Terms of Use</Link>&nbsp;Powered by&nbsp;<Link href="https://ringel.ai/" className="underline">Ringel.AI</Link>
-          </div>
+          <footer className="w-full px-5 py-4 flex justify-center text-xs text-gray-400">
+            <span>
+              © {new Date().getFullYear()} {OWNER_NAME} · <Link href="/terms" className="hover:underline">Terms of Use</Link> · Powered by <Link href="https://ringel.ai/" className="hover:underline">Ringel.AI</Link>
+            </span>
+          </footer>
         </div>
       </main>
-    </div >
+    </div>
   );
 }
