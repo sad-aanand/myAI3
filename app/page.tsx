@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useChat } from "@ai-sdk/react";
-import { ArrowUp, Loader2, Plus, Square } from "lucide-react";
+import { ArrowUp, Loader2, Plus, Square, Sparkles } from "lucide-react";
 import { MessageWall } from "@/components/messages/message-wall";
 import { UIMessage } from "ai";
 import { useEffect, useState, useRef } from "react";
@@ -156,85 +156,98 @@ export default function Chat() {
   const hasConversation = messages.length > 1 || (messages.length === 1 && messages[0].role === "user");
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans">
-      <header className="w-full py-6 flex justify-center items-center">
-        <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Prep Buddy Logo" width={32} height={32} className="rounded-lg" />
-          <span className="text-xl font-bold text-[#1e3a5f] lowercase tracking-tight">prep buddy</span>
+    <div className="flex min-h-screen flex-col bg-gradient-to-br from-slate-50 via-white to-blue-50/30 font-sans antialiased">
+      <header className="w-full py-5 px-6 flex justify-between items-center backdrop-blur-sm bg-white/70 sticky top-0 z-40 border-b border-slate-100/50">
+        <div className="flex-1" />
+        <div className="flex items-center gap-2.5 group cursor-default">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl blur-md opacity-20 group-hover:opacity-30 transition-opacity" />
+            <Image src="/logo.png" alt="Prep Buddy Logo" width={34} height={34} className="relative rounded-xl shadow-sm" />
+          </div>
+          <span className="text-xl font-semibold bg-gradient-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent lowercase tracking-tight">
+            prep buddy
+          </span>
         </div>
-        {hasConversation && (
-          <Button
-            variant="outline"
-            size="sm"
-            className="absolute right-5 cursor-pointer"
-            onClick={clearChat}
-          >
-            <Plus className="size-4" />
-            {CLEAR_CHAT_TEXT}
-          </Button>
-        )}
+        <div className="flex-1 flex justify-end">
+          {hasConversation && (
+            <button
+              onClick={clearChat}
+              className="flex items-center gap-1.5 px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 rounded-xl border border-slate-200 hover:border-slate-300 shadow-sm hover:shadow transition-all duration-200"
+            >
+              <Plus className="size-4" />
+              {CLEAR_CHAT_TEXT}
+            </button>
+          )}
+        </div>
       </header>
 
       <main className="flex-1 flex flex-col relative">
         {!hasConversation ? (
-          <div className="flex-1 flex flex-col items-center justify-center px-5 pb-48">
-            <div className="bg-[#e8f4fc] rounded-3xl shadow-lg p-8 md:p-10 max-w-lg w-full text-center mb-8">
-              <h1 className="text-2xl md:text-3xl font-semibold text-[#1e3a5f] mb-3">
-                Hello! I'm Prep Buddy,
-              </h1>
-              <p className="text-[#4a6b8a] text-base md:text-lg leading-relaxed">
-                your AI assistant for anything related<br />to placements at BITSoM
-              </p>
+          <div className="flex-1 flex flex-col items-center justify-center px-5 pb-52">
+            <div className="relative mb-10">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-purple-500/20 rounded-[2rem] blur-2xl" />
+              <div className="relative bg-white/80 backdrop-blur-xl rounded-[1.75rem] shadow-xl shadow-slate-200/50 border border-white/60 p-10 md:p-12 max-w-md w-full text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-full text-xs font-medium text-indigo-600 mb-6 border border-indigo-100/50">
+                  <Sparkles className="size-3.5" />
+                  AI-Powered Assistant
+                </div>
+                <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 bg-clip-text text-transparent mb-4 leading-tight">
+                  Hello! I'm Prep Buddy,
+                </h1>
+                <p className="text-slate-500 text-base md:text-lg leading-relaxed font-light">
+                  your AI assistant for anything related<br />to placements at BITSoM
+                </p>
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 mb-6 w-full max-w-lg justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 mb-8 w-full max-w-md justify-center">
               <button
                 onClick={() => fillPrompt(STARTER_PROMPTS.prep)}
-                className="px-6 py-3 bg-[#e8a4b8] hover:bg-[#dda0a8] text-[#1e3a5f] font-medium rounded-full transition-colors text-sm md:text-base shadow-sm"
+                className="group px-5 py-3 bg-gradient-to-r from-rose-400 to-pink-400 hover:from-rose-500 hover:to-pink-500 text-white font-medium rounded-2xl transition-all duration-300 text-sm shadow-lg shadow-rose-200/50 hover:shadow-xl hover:shadow-rose-300/50 hover:-translate-y-0.5"
               >
                 Prep for a company
               </button>
               <button
                 onClick={() => fillPrompt(STARTER_PROMPTS.selected)}
-                className="px-6 py-3 bg-white hover:bg-gray-50 text-[#1e3a5f] font-medium rounded-full border border-[#d1d5db] transition-colors text-sm md:text-base shadow-sm"
+                className="group px-5 py-3 bg-white hover:bg-slate-50 text-slate-700 font-medium rounded-2xl border border-slate-200 hover:border-slate-300 transition-all duration-300 text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5"
               >
                 Who was selected at...
               </button>
               <button
                 onClick={() => fillPrompt(STARTER_PROMPTS.general)}
-                className="px-6 py-3 bg-white hover:bg-gray-50 text-[#7c3aed] font-medium rounded-full border border-[#d1d5db] transition-colors text-sm md:text-base shadow-sm"
+                className="group px-5 py-3 bg-white hover:bg-violet-50 text-violet-600 font-medium rounded-2xl border border-slate-200 hover:border-violet-200 transition-all duration-300 text-sm shadow-sm hover:shadow-md hover:-translate-y-0.5"
               >
                 General chat
               </button>
             </div>
 
-            <p className="text-xs text-gray-400 text-center max-w-md">
+            <p className="text-xs text-slate-400 text-center max-w-sm leading-relaxed">
               Product in beta – please verify responses, currently limited to Product Management domain.
             </p>
           </div>
         ) : (
-          <div className="flex-1 overflow-y-auto px-5 py-4 pb-48">
+          <div className="flex-1 overflow-y-auto px-5 py-4 pb-52">
             <div className="flex flex-col items-center justify-end min-h-full">
               {isClient ? (
                 <>
                   <MessageWall messages={messages} status={status} durations={durations} onDurationChange={handleDurationChange} />
                   {status === "submitted" && (
                     <div className="flex justify-start max-w-3xl w-full">
-                      <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                      <Loader2 className="size-4 animate-spin text-slate-400" />
                     </div>
                   )}
                 </>
               ) : (
                 <div className="flex justify-center max-w-2xl w-full">
-                  <Loader2 className="size-4 animate-spin text-muted-foreground" />
+                  <Loader2 className="size-4 animate-spin text-slate-400" />
                 </div>
               )}
             </div>
           </div>
         )}
 
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white via-white to-transparent pt-6">
-          <div className="w-full px-5 pb-3 flex justify-center">
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-t from-white via-white/95 to-transparent pt-8 pb-2">
+          <div className="w-full px-5 pb-2 flex justify-center">
             <div className="max-w-2xl w-full">
               <form id="chat-form" onSubmit={form.handleSubmit(onSubmit)}>
                 <FieldGroup>
@@ -246,43 +259,43 @@ export default function Chat() {
                         <FieldLabel htmlFor="chat-form-message" className="sr-only">
                           Message
                         </FieldLabel>
-                        <div className="relative">
-                          <Input
-                            {...field}
-                            id="chat-form-message"
-                            className="h-14 pr-14 pl-5 bg-[#f3f4f6] rounded-full border-0 shadow-sm text-gray-700 placeholder:text-gray-400 focus-visible:ring-2 focus-visible:ring-[#1e3a5f]/20"
-                            placeholder="Type your message here..."
-                            disabled={status === "streaming"}
-                            aria-invalid={fieldState.invalid}
-                            autoComplete="off"
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" && !e.shiftKey) {
-                                e.preventDefault();
-                                form.handleSubmit(onSubmit)();
-                              }
-                            }}
-                          />
-                          {(status == "ready" || status == "error") && (
-                            <Button
-                              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#1e3a5f] hover:bg-[#2d4a6f] size-10"
-                              type="submit"
-                              disabled={!field.value.trim()}
-                              size="icon"
-                            >
-                              <ArrowUp className="size-5 text-white" />
-                            </Button>
-                          )}
-                          {(status == "streaming" || status == "submitted") && (
-                            <Button
-                              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-[#1e3a5f] hover:bg-[#2d4a6f] size-10"
-                              size="icon"
-                              onClick={() => {
-                                stop();
+                        <div className="relative group">
+                          <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500/20 via-indigo-500/20 to-purple-500/20 rounded-2xl blur-lg opacity-0 group-focus-within:opacity-100 transition-opacity duration-300" />
+                          <div className="relative">
+                            <Input
+                              {...field}
+                              id="chat-form-message"
+                              className="h-14 pr-14 pl-5 bg-white rounded-2xl border border-slate-200 shadow-lg shadow-slate-100/50 text-slate-700 placeholder:text-slate-400 focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:border-indigo-300 transition-all duration-200"
+                              placeholder="Type your message here..."
+                              disabled={status === "streaming"}
+                              aria-invalid={fieldState.invalid}
+                              autoComplete="off"
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                  e.preventDefault();
+                                  form.handleSubmit(onSubmit)();
+                                }
                               }}
-                            >
-                              <Square className="size-4 text-white" />
-                            </Button>
-                          )}
+                            />
+                            {(status == "ready" || status == "error") && (
+                              <button
+                                type="submit"
+                                disabled={!field.value.trim()}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-xl bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 disabled:from-slate-300 disabled:to-slate-300 disabled:cursor-not-allowed shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center group"
+                              >
+                                <ArrowUp className="size-5 text-white group-disabled:text-slate-400" />
+                              </button>
+                            )}
+                            {(status == "streaming" || status == "submitted") && (
+                              <button
+                                type="button"
+                                onClick={() => stop()}
+                                className="absolute right-2 top-1/2 -translate-y-1/2 size-10 rounded-xl bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center"
+                              >
+                                <Square className="size-4 text-white" />
+                              </button>
+                            )}
+                          </div>
                         </div>
                       </Field>
                     )}
@@ -291,9 +304,14 @@ export default function Chat() {
               </form>
             </div>
           </div>
-          <footer className="w-full px-5 py-4 flex justify-center text-xs text-gray-400">
-            <span>
-              © {new Date().getFullYear()} {OWNER_NAME} · <Link href="/terms" className="hover:underline">Terms of Use</Link> · Powered by <Link href="https://ringel.ai/" className="hover:underline">Ringel.AI</Link>
+          <footer className="w-full px-5 py-3 flex justify-center">
+            <span className="text-xs text-slate-400 flex items-center gap-1.5">
+              © {new Date().getFullYear()} {OWNER_NAME}
+              <span className="text-slate-300">·</span>
+              <Link href="/terms" className="hover:text-slate-600 transition-colors">Terms of Use</Link>
+              <span className="text-slate-300">·</span>
+              <span>Powered by</span>
+              <Link href="https://ringel.ai/" className="hover:text-slate-600 transition-colors font-medium">Ringel.AI</Link>
             </span>
           </footer>
         </div>
