@@ -98,6 +98,15 @@ The application is designed to be easily customizable:
 
 ## Recent Changes
 
+- **2024-11-27**: Front-end UI redesign
+  - Centered logo with icon + "prep buddy" text in bold dark navy
+  - Light-blue rounded hero card with heading and subtitle
+  - Three starter prompt pill buttons (Prep for a company, Who was selected at..., General chat)
+  - Beta disclaimer text below buttons
+  - Redesigned chat input bar with rounded container and circular send button
+  - Updated footer with copyright, Terms of Use, and Ringel.AI attribution
+  - Conditional UI: hero section shown for new users, message wall for active conversations
+
 - **2024-11-27**: Initial Replit environment setup
   - Configured Next.js to run on port 5000 with host 0.0.0.0
   - Added allowed origins configuration for Replit proxy
