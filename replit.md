@@ -1,8 +1,8 @@
-# MyAI3 - Replit Setup
+# Prep Buddy - Replit Setup
 
 ## Overview
 
-This is an AI-powered chatbot assistant built with Next.js 16, featuring web search capabilities, vector database integration, and content moderation. The application has been configured to run in the Replit environment.
+Prep Buddy is a sleek, modern AI-powered placement assistant for BITSoM, built with Next.js 16. Features web search capabilities, vector database integration, content moderation, and a contemporary glass-morphism UI design. Configured to run in the Replit environment.
 
 ## Project Information
 
@@ -94,18 +94,31 @@ The application is designed to be easily customizable:
 3. **Vector Database**: Pinecone integration for knowledge base search
 4. **Content Moderation**: OpenAI moderation API for safe interactions
 5. **Citations**: Automatic source attribution for search results
-6. **Responsive UI**: Modern, accessible interface with Radix UI components
+6. **Modern UI**: Sleek glass-morphism design with gradient effects and smooth animations
+7. **Starter Prompts**: Quick-action buttons to help users get started
+8. **Persistent Chat**: Messages stored in localStorage for session continuity
 
 ## Recent Changes
 
-- **2024-11-27**: Front-end UI redesign
-  - Centered logo with icon + "prep buddy" text in bold dark navy
-  - Light-blue rounded hero card with heading and subtitle
-  - Three starter prompt pill buttons (Prep for a company, Who was selected at..., General chat)
-  - Beta disclaimer text below buttons
-  - Redesigned chat input bar with rounded container and circular send button
-  - Updated footer with copyright, Terms of Use, and Ringel.AI attribution
-  - Conditional UI: hero section shown for new users, message wall for active conversations
+- **2024-11-27**: Sleek modern UI redesign
+  - Glass-morphism hero card with backdrop blur and gradient shadows
+  - Gradient background (slate-50 to blue-50)
+  - Logo with subtle glow effect on hover
+  - "AI-Powered Assistant" badge with sparkle icon
+  - Three animated starter prompt buttons with hover lift effects
+  - Pink gradient primary button, white bordered secondary buttons
+  - Focus glow effect on input bar
+  - Smooth 200-300ms transitions throughout
+  - Sticky header with backdrop blur
+
+- **2024-11-27**: Initial front-end UI redesign
+  - Centered logo with icon + "prep buddy" text
+  - Hero card with heading and subtitle
+  - Three starter prompt pill buttons
+  - Beta disclaimer text
+  - Redesigned chat input bar
+  - Footer with copyright, Terms of Use, and Ringel.AI attribution
+  - Conditional UI: hero section for new users, message wall for conversations
 
 - **2024-11-27**: Initial Replit environment setup
   - Configured Next.js to run on port 5000 with host 0.0.0.0
